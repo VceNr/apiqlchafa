@@ -4,10 +4,17 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const allowedOrigins = [
+    'http://localhost:4200',
+    'https://erp-we-a-jxlt.vercel.app',
+    process.env.CORS_ORIGIN,
+  ].filter(Boolean);
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
