@@ -62,6 +62,7 @@ import { ConfiguracionNotificacion } from './configuracion/entities/configuracio
         username: configService.get<string>('DB_USERNAME') || 'postgres',
         password: configService.get<string>('DB_PASSWORD') || 'postgres',
         database: configService.get<string>('DB_DATABASE') || 'erp_db',
+        extra: { family: 4 }, // fuerza IPv4
         entities: [
           Usuario,
           OrdenVenta,
