@@ -55,15 +55,9 @@ import { ConfiguracionNotificacion } from './configuracion/entities/configuracio
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST') || 'localhost',
-        port: configService.get<number>('DB_PORT') || 5432,
-        username: configService.get<string>('DB_USERNAME') || 'postgres',
-        password: configService.get<string>('DB_PASSWORD') || 'postgres',
-        database: configService.get<string>('DB_DATABASE') || 'erp_db',
-        extra: { family: 4 }, // fuerza IPv4
-        entities: [
+      useFactory: (configService: ConfigService) => {
+        const url = configService.get<string>('DATABASE_URL');
+        const entities = [
           Usuario,
           OrdenVenta,
           Vendedor,
@@ -89,13 +83,25 @@ import { ConfiguracionNotificacion } from './configuracion/entities/configuracio
           ConfiguracionGeneral,
           Integracion,
           ConfiguracionNotificacion,
-        ],
-        synchronize: true,
-        logging: false,
-        ssl: configService.get<string>('DB_HOST')?.includes('supabase.co')
-          ? { rejectUnauthorized: false }
-          : false,
-      }),
+        ];
+        const base = {
+          type: 'postgres' as const,
+          entities,
+          synchronize: true,
+          logging: false,
+          ssl: { rejectUnauthorized: false },
+          extra: { family: 4 },
+        };
+        if (url) return { ...base, url };
+        return {
+          ...base,
+          host: configService.get<string>('DB_HOST') || 'localhost',
+          port: configService.get<number>('DB_PORT') || 5432,
+          username: configService.get<string>('DB_USERNAME') || 'postgres',
+          password: configService.get<string>('DB_PASSWORD') || 'postgres',
+          database: configService.get<string>('DB_DATABASE') || 'postgres',
+        };
+      },
     }),
     AuthModule,
     DashboardModule,
