@@ -12,9 +12,14 @@ export class SupabaseService {
   private adminClient: SupabaseClient;
 
   constructor(private configService: ConfigService) {
-    const url = this.configService.getOrThrow<string>('SUPABASE_URL');
-    const publishableKey = this.configService.getOrThrow<string>('SUPABASE_PUBLISHABLE_KEY');
-    const secretKey = this.configService.getOrThrow<string>('SUPABASE_SECRET_KEY');
+    const url = this.configService.get<string>('SUPABASE_URL') ?? '';
+    const publishableKey = this.configService.get<string>('SUPABASE_PUBLISHABLE_KEY') ?? '';
+    const secretKey = this.configService.get<string>('SUPABASE_SECRET_KEY') ?? '';
+
+    if (!url || !publishableKey || !secretKey) {
+      console.warn('⚠️  Supabase env vars not set — SupabaseService running in degraded mode');
+      return;
+    }
 
     // Cliente con publishable key (respeta RLS)
     this.client = createClient(url, publishableKey, {
@@ -31,8 +36,8 @@ export class SupabaseService {
   /** Cliente con RLS. Pasa el JWT del usuario para actuar como él. */
   getClient(accessToken?: string): SupabaseClient {
     if (accessToken) {
-      const url = this.configService.getOrThrow<string>('SUPABASE_URL');
-      const publishableKey = this.configService.getOrThrow<string>('SUPABASE_PUBLISHABLE_KEY');
+      const url = this.configService.get<string>('SUPABASE_URL') ?? '';
+      const publishableKey = this.configService.get<string>('SUPABASE_PUBLISHABLE_KEY') ?? '';
       return createClient(url, publishableKey, {
         global: { headers: { Authorization: `Bearer ${accessToken}` } },
         realtime: { transport: WsTransport },
