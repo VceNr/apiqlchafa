@@ -5,15 +5,15 @@ import {
   Put,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InventarioService } from './inventario.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { CreateAjusteDto } from './dto/create-ajuste.dto';
 
 @Controller('inventario')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class InventarioController {
   constructor(private readonly inventarioService: InventarioService) {}
 

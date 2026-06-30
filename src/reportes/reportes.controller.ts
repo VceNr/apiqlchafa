@@ -4,13 +4,13 @@ import {
   Post,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ReportesService } from './reportes.service';
 
 @Controller('reportes')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ReportesController {
   constructor(private readonly reportesService: ReportesService) {}
 

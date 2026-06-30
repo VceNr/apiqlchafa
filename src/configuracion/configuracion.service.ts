@@ -5,6 +5,7 @@ import { ConfiguracionGeneral } from './entities/configuracion-general.entity';
 import { Integracion } from './entities/integracion.entity';
 import { ConfiguracionNotificacion } from './entities/configuracion-notificacion.entity';
 import { CreateConfiguracionGeneralDto } from './dto/create-configuracion-general.dto';
+import { Usuario } from '../auth/entities/usuario.entity';
 
 @Injectable()
 export class ConfiguracionService {
@@ -15,6 +16,8 @@ export class ConfiguracionService {
     private integracionesRepository: Repository<Integracion>,
     @InjectRepository(ConfiguracionNotificacion)
     private notificacionesRepository: Repository<ConfiguracionNotificacion>,
+    @InjectRepository(Usuario)
+    private usuarioRepository: Repository<Usuario>,
   ) {}
 
   async getConfiguracionGeneral(): Promise<ConfiguracionGeneral | null> {
@@ -31,14 +34,9 @@ export class ConfiguracionService {
     return this.configGeneralRepository.save(existing);
   }
 
-  getUsuarios() {
-    return [
-      { id: 1, username: 'admin', nombre: 'Administrador del Sistema', rol: 'admin', activo: true, ultimo_acceso: '2024-01-15T14:32:00Z' },
-      { id: 2, username: 'jperez', nombre: 'Juan Carlos Pérez', rol: 'vendedor', activo: true, ultimo_acceso: '2024-01-15T13:55:00Z' },
-      { id: 3, username: 'mgonzalez', nombre: 'María González', rol: 'compras', activo: true, ultimo_acceso: '2024-01-15T11:20:00Z' },
-      { id: 4, username: 'crodriguez', nombre: 'Carolina Rodríguez', rol: 'contabilidad', activo: true, ultimo_acceso: '2024-01-14T18:45:00Z' },
-      { id: 5, username: 'alopez', nombre: 'Andrés López', rol: 'inventario', activo: false, ultimo_acceso: '2023-12-20T09:00:00Z' },
-    ];
+  async getUsuarios() {
+    const usuarios = await this.usuarioRepository.find({ order: { created_at: 'ASC' } });
+    return usuarios.map(({ password_hash: _pw, ...u }) => u);
   }
 
   async getIntegraciones(): Promise<Integracion[]> {

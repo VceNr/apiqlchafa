@@ -4,13 +4,13 @@ import {
   Post,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AuditoriaService } from './auditoria.service';
 
 @Controller('auditoria')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class AuditoriaController {
   constructor(private readonly auditoriaService: AuditoriaService) {}
 

@@ -6,15 +6,15 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ContabilidadService } from './contabilidad.service';
 import { CreateFacturaDto } from './dto/create-factura.dto';
 import { CreateAsientoDto } from './dto/create-asiento.dto';
 
 @Controller('contabilidad')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ContabilidadController {
   constructor(private readonly contabilidadService: ContabilidadService) {}
 

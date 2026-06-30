@@ -6,14 +6,14 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RrhhService } from './rrhh.service';
 import { CreateEmpleadoDto } from './dto/create-empleado.dto';
 
 @Controller('rrhh')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class RrhhController {
   constructor(private readonly rrhhService: RrhhService) {}
 

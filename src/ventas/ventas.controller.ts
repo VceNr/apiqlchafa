@@ -6,14 +6,14 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { VentasService } from './ventas.service';
 import { CreateOrdenVentaDto } from './dto/create-orden-venta.dto';
 
 @Controller('ventas')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class VentasController {
   constructor(private readonly ventasService: VentasService) {}
 

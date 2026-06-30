@@ -15,16 +15,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(dto: LoginDto): Promise<{ access_token: string; user: { id: number; nombre: string; email: string | null; rol: string } }> {
+  async login(dto: LoginDto): Promise<{ token: string; user: { id: number; nombre: string; rol: string } }> {
     const usuario = await this.validateUser(dto.username, dto.password);
     const payload = { sub: usuario.id, username: usuario.username, rol: usuario.rol };
     await this.usuariosRepository.update(usuario.id, { ultimo_acceso: new Date() });
     return {
-      access_token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
       user: {
         id: usuario.id,
         nombre: usuario.nombre,
-        email: (usuario as any).email || '',
         rol: usuario.rol,
       },
     };

@@ -5,14 +5,14 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ConfiguracionService } from './configuracion.service';
 import { CreateConfiguracionGeneralDto } from './dto/create-configuracion-general.dto';
 
 @Controller('config')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ConfiguracionController {
   constructor(private readonly configuracionService: ConfiguracionService) {}
 

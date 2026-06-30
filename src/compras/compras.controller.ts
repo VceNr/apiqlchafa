@@ -6,15 +6,15 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ComprasService } from './compras.service';
 import { CreateOrdenCompraDto } from './dto/create-orden-compra.dto';
 import { CreateProveedorDto } from './dto/create-proveedor.dto';
 
 @Controller('compras')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ComprasController {
   constructor(private readonly comprasService: ComprasService) {}
 

@@ -6,14 +6,14 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ProduccionService } from './produccion.service';
 import { CreateOrdenProduccionDto } from './dto/create-orden-produccion.dto';
 
 @Controller('produccion')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ProduccionController {
   constructor(private readonly produccionService: ProduccionService) {}
 

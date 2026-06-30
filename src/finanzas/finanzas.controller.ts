@@ -3,14 +3,14 @@ import {
   Get,
   Post,
   Body,
+  UseGuards,
 } from '@nestjs/common';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FinanzasService } from './finanzas.service';
 import { CreateMovimientoDto } from './dto/create-movimiento-financiero.dto';
 
 @Controller('finanzas')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class FinanzasController {
   constructor(private readonly finanzasService: FinanzasService) {}
 
